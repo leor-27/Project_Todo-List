@@ -56,4 +56,10 @@ function updateCompletedTodo() {
 
 updateTodo(2, "Jerico", "jerico", "hejsj", "jajsaj", true);
 
+function deleteTodo(title) {
+  const index = TODOS.findLastIndex((todos) => todos.title === title);
+  TODOS.prototype.splice(index);
+}
+
+deleteTodo("Jerico");
 console.log(TODOS);
