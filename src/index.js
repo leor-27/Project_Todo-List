@@ -13,6 +13,23 @@ class Todo {
   toggleCompleted() {
     this.completed = true;
   }
+  edit({ title, description, dueDate, priority, completed }) {
+    if (title !== undefined) {
+      this.title = title;
+    }
+    if (description !== undefined) {
+      this.description = description;
+    }
+    if (dueDate !== undefined) {
+      this.dueDate = dueDate;
+    }
+    if (priority !== undefined) {
+      this.priority = priority;
+    }
+    if (completed !== undefined) {
+      this.completed = completed;
+    }
+  }
 }
 
 class Project {
@@ -33,6 +50,12 @@ class Project {
   deleteTodo(ID) {
     this.todos = this.todos.filter((todo) => todo.ID !== ID);
   }
+  editTodo(ID, newData) {
+    const todo = this.todos.find((todo) => todo.ID === ID);
+    if (todo) {
+      todo.edit(newData);
+    }
+  }
 }
 
 function createTodo(title, description, dueDate, priority, completed) {
@@ -52,6 +75,19 @@ myProject.getTodos()[0].toggleCompleted();
 
 const todoID = myProject.getTodos()[0].ID;
 myProject.deleteTodo(todoID);
+
+myProject.getTodos().forEach((todo) => {
+  console.log(todo);
+});
+
+const myTodos = myProject.getTodos();
+const targetID = myTodos[0].ID;
+
+myProject.editTodo(targetID, {
+  title: "Updated laundry task",
+  priority: "high",
+  completed: false,
+});
 
 myProject.getTodos().forEach((todo) => {
   console.log(todo);
