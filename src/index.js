@@ -1,15 +1,24 @@
 import "./styles.css";
 
+class Project {
+  constructor(name) {
+    this.name = name;
+    this.todos = [];
+  }
+}
+
 class Todos {
-  constructor(title, description, dueDate, priority) {
+  constructor(title, description, dueDate, priority, completed = false) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.completed = completed;
   }
 }
 
-const TODOS = []; // Storage
+const TODOS = [];
+const PROJECTS = [];
 
 function createTodo() {
   let title = "Feed the Dog";
@@ -22,8 +31,29 @@ function createTodo() {
 }
 
 createTodo();
+createTodo();
+createTodo();
+createTodo();
 
-createTodo();
-createTodo();
-createTodo();
+function updateTodo(
+  index,
+  newTitle,
+  newDescription,
+  newDueDate,
+  newPriority,
+  newCompleted = false
+) {
+  let todo = TODOS[index];
+  todo.title = newTitle;
+  todo.description = newDescription;
+  todo.dueDate = newDueDate;
+  todo.priority = newPriority;
+}
+
+function updateCompletedTodo() {
+  Todos.completed = true;
+}
+
+updateTodo(2, "Jerico", "jerico", "hejsj", "jajsaj", true);
+
 console.log(TODOS);
