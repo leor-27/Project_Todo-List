@@ -1,13 +1,6 @@
 import "./styles.css";
 
-class Project {
-  constructor(name) {
-    this.name = name;
-    this.todos = [];
-  }
-}
-
-class Todos {
+class Todo {
   constructor(title, description, dueDate, priority, completed = false) {
     this.title = title;
     this.description = description;
@@ -15,51 +8,41 @@ class Todos {
     this.priority = priority;
     this.completed = completed;
   }
+  toggleCompleted() {
+    this.completed = true;
+  }
 }
 
-const TODOS = [];
-const PROJECTS = [];
-
-function createTodo() {
-  let title = "Feed the Dog";
-  let description = "The dog food is in the fridge";
-  let dueDate = "12:00 pm";
-  let priority = "asap";
-
-  let todo = new Todos(title, description, dueDate, priority);
-  TODOS.push(todo);
+class Project {
+  constructor(name) {
+    this.name = name;
+    this.todos = [];
+  }
+  getName() {
+    return this.name;
+  }
+  getTodos() {
+    return this.todos;
+  }
+  addTodo(title, description, dueDate, priority, completed) {
+    const todo = createTodo(title, description, dueDate, priority, completed);
+    this.todos.push(todo);
+  }
 }
 
-createTodo();
-createTodo();
-createTodo();
-createTodo();
+const defaultProject = new Project("Default");
 
-function updateTodo(
-  index,
-  newTitle,
-  newDescription,
-  newDueDate,
-  newPriority,
-  newCompleted = false
-) {
-  let todo = TODOS[index];
-  todo.title = newTitle;
-  todo.description = newDescription;
-  todo.dueDate = newDueDate;
-  todo.priority = newPriority;
+function createTodo(title, description, dueDate, priority, completed) {
+  return new Todo(title, description, dueDate, priority, completed);
 }
 
-function updateCompletedTodo() {
-  Todos.completed = true;
-}
+const newProject = function createProject() {
+  let projectName = "project1";
+  return new Project(projectName);
+};
 
-updateTodo(2, "Jerico", "jerico", "hejsj", "jajsaj", true);
+const myProject = newProject();
+myProject.addTodo("Do laundry", "Use gentle cycle", "6/30", "medium");
+myProject.getTodos()[0].toggleCompleted();
 
-function deleteTodo(title) {
-  const index = TODOS.findLastIndex((todos) => todos.title === title);
-  TODOS.prototype.splice(index);
-}
-
-deleteTodo("Jerico");
-console.log(TODOS);
+console.log(myProject.getTodos());
