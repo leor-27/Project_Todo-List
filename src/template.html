@@ -3,9 +3,72 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=close"
+    />
+
     <title>Project Todo List</title>
   </head>
   <body>
-    <div id="app"></div>
+    <div id="app">
+      <dialog id="AddTaskDialog">
+        <form method="dialog">
+          <button value="cancel" formmethod="dialog" class="cancel-btn">
+            <span class="material-symbols-outlined"> close </span>
+          </button>
+          <p class="title">
+            <input
+              type="text"
+              id="title"
+              class="form-input"
+              name="title"
+              placeholder="Task name"
+              required
+            />
+          </p>
+          <p class="description">
+            <input
+              type="text"
+              id="description"
+              class="form-input"
+              name="description"
+              placeholder="Description"
+            />
+          </p>
+          <p class="dueDate">
+            <input
+              type="datetime-local"
+              class="form-input"
+              id="dueDate"
+              name="dueDate"
+            />
+          </p>
+          <label for="priority-dropdown">Priority</label>
+          <select
+            name="priority-dropdown"
+            id="priority-dropdown"
+            class="form-input"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+          <select
+            name="projects-dropdown"
+            id="projects-dropdown"
+            class="form-input"
+          >
+            <option value="" class="project-label">Projects</option>
+          </select>
+          <div class="TaskDialogBtn">
+            <button id="confirm" value="default" type="button">Add Task</button>
+          </div>
+        </form>
+      </dialog>
+      <button id="openTaskDialog">
+        <span class="material-symbols-outlined"> + </span>
+      </button>
+    </div>
   </body>
 </html>
