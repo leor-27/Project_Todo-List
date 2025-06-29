@@ -1,5 +1,6 @@
 import { createTodo } from "./todo";
-import { compareAsc, format } from "date-fns";
+import { compareAsc, constructFrom, format } from "date-fns";
+import { TaskDialog } from ".";
 
 export function createWindow() {
   const container = document.createElement("div");
@@ -14,6 +15,37 @@ export function createWindow() {
   const addTaskBtn = document.createElement("button");
   addTaskBtn.className = "addTask";
   addTaskBtn.textContent = "Add task";
+
+  // Show modal
+  const openTaskDialog = document.querySelector("#openTaskDialog");
+  const TaskDialog = document.querySelector("#AddTaskDialog");
+
+  openTaskDialog.addEventListener("click", () => {
+    TaskDialog.showModal();
+  });
+
+  const cancelBtn = document.querySelector(".cancel-btn");
+  cancelBtn.addEventListener("click", () => {
+    TaskDialog.close();
+  });
+
+  const titleValue = document.querySelector("#title");
+  const descriptionValue = document.querySelector("#description");
+  const dueDateValue = document.querySelector("#dueDate");
+  const priorityValue = document.querySelector("#priority-dropdown");
+  const projectName = document.querySelector("#project-dropdown");
+
+  const confirmBtn = document.getElementById("#confirm");
+  confirmBtn.addEventListener("click", (e) => {
+    e.preventDefault();
+    const title = titleValue.value;
+    const description = descriptionValue.value;
+    const dueDate = dueDateValue.value;
+    const priority = priorityValue.value;
+    const projectLabel = projectName.value;
+
+    showTask();
+  });
 
   container.appendChild(inputTask);
   container.appendChild(inputDate);
@@ -40,5 +72,5 @@ export function createWindow() {
     inputDate.value = "";
   });
 
-  document.body.appendChild(container);
+  // document.body.appendChild(container);
 }
