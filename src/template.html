@@ -58,16 +58,25 @@
             name="projects-dropdown"
             id="projects-dropdown"
             class="form-input"
-          >
-            <option value="" class="project-label">Projects</option>
-          </select>
+          ></select>
           <div class="TaskDialogBtn">
             <button id="confirm" value="default" type="button">Add Task</button>
           </div>
         </form>
       </dialog>
       <button id="openTaskDialog">Add Task +</button>
+
       <button id="openProjectDialog">New Project</button>
+      <dialog id="addProjectDialog">
+        <form method="dialog">
+          <label for="projectName">Project Name</label>
+          <input type="text" id="projectName" name="projectName" />
+          <button value="cancel" formmethod="dialog">
+            <span class="material-symbols-outlined"> close </span>
+          </button>
+          <button id="projectConfirmBtn" type="button">confirm</button>
+        </form>
+      </dialog>
     </div>
   </body>
 </html>

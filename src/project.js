@@ -25,10 +25,9 @@ export class Project {
   }
 }
 
-const PROJECTS = [];
+export const PROJECTS = [];
 
-export function createProject() {
-  let projectName = "New Project";
+export function createProject(projectName) {
   PROJECTS.push(new Project(projectName));
   return PROJECTS[PROJECTS.length - 1];
 }
