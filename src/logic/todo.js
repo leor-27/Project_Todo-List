@@ -1,17 +1,26 @@
 import { v4 as uuidv4 } from "uuid";
 
 export class Todo {
-  constructor(title, description, dueDate, priority, completed = false, ID) {
+  constructor(
+    title,
+    description = "",
+    dueDate = null,
+    priority = "low",
+    completed = false,
+    idGenerator = uuidv4
+  ) {
     this.title = title;
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
     this.completed = completed;
-    this.ID = uuidv4();
+    this.ID = idGenerator();
   }
-  toggleCompleted() {
-    this.completed = true;
+
+  markAsCompleted() {
+    this.completed = !this.completed;
   }
+
   edit({ title, description, dueDate, priority, completed }) {
     if (title !== undefined) {
       this.title = title;

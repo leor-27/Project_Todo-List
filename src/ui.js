@@ -1,38 +1,46 @@
-import { createTodo } from "./todo";
+import { createTodo } from "./logic/todo";
 import { compareAsc, constructFrom, format } from "date-fns";
-import { createProject } from "./project";
-import { PROJECTS } from "./project";
+import { createProject, getAllProject } from "./logic/project";
+import { handleNewTodo } from "./controller";
+import { ProjectManager } from "./logic/project";
+
+const PROJECT_MANAGER = new ProjectManager();
+
+const DOM = {
+  taskDialog: document.querySelector("#AddTaskDialog"),
+  title: document.querySelector("#title"),
+  description: document.querySelector("#description"),
+  dueDate: document.querySelector("#dueDate"),
+  priority: document.querySelector("#priority-dropdown"),
+  projectName: document.querySelector("#projects-dropdown"),
+  confirmTodoBtn: document.querySelector("#confirm"),
+  projectDialog: document.querySelector("#addProjectDialog"),
+  openProjectDialogBtn: document.querySelector("#openProjectDialog"),
+  confirmProjectBtn: document.querySelector("#projectConfirmBtn"),
+  projectNameInput: document.querySelector("#projectName"),
+  container: document.querySelector("#app"),
+  cancelTaskBtn: document.querySelector(".cancel-btn"),
+  openTaskDialog: document.querySelector("#openTaskDialog"),
+};
 
 export function createWindow() {
-  const container = document.querySelector("#app");
-
   // Show modal
-  const openTaskDialog = document.querySelector("#openTaskDialog");
-  const TaskDialog = document.querySelector("#AddTaskDialog");
 
-  openTaskDialog.addEventListener("click", () => {
-    TaskDialog.showModal();
+  DOM.openTaskDialog.addEventListener("click", () => {
+    DOM.taskDialog.showModal();
   });
 
-  const cancelBtn = document.querySelector(".cancel-btn");
-  cancelBtn.addEventListener("click", () => {
-    TaskDialog.close();
+  DOM.cancelTaskBtn.addEventListener("click", () => {
+    DOM.taskDialog.close();
   });
 
-  const titleValue = document.querySelector("#title");
-  const descriptionValue = document.querySelector("#description");
-  const dueDateValue = document.querySelector("#dueDate");
-  const priorityValue = document.querySelector("#priority-dropdown");
-  const projectName = document.querySelector("#projects-dropdown");
-
-  const confirmBtn = document.getElementById("confirm");
-  confirmBtn.addEventListener("click", (e) => {
+  DOM.confirmTodoBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const title = titleValue.value;
-    const description = descriptionValue.value;
-    const dueDate = dueDateValue.value;
-    const priority = priorityValue.value;
-    const projectLabel = projectName.value;
+    const title = DOM.title.value;
+    const description = DOM.description.value;
+    const dueDate = DOM.dueDate.value;
+    const priority = DOM.priority.value;
+    const projectName = DOM.projectName.value; // <-- add this line
 
     const formattedDate = format(new Date(dueDate), "PPp");
 
@@ -41,35 +49,35 @@ export function createWindow() {
     const task = document.createElement("p");
     task.className = "task";
 
-    const todo = createTodo(title, description, formattedDate, priority, false);
-    // task.textContent = JSON.stringify(todo, null, 2);
-    task.textContent = `${todo.title} ${todo.description} ${todo.dueDate} ${todo.priority} ${todo.completed}`;
+    const todo = handleNewTodo({
+      title,
+      description,
+      dueDate,
+      priority,
+      projectName,
+    });
 
     div.appendChild(task);
-    container.appendChild(div);
+    DOM.container.appendChild(div);
 
-    titleValue.value = "";
-    descriptionValue.value = "";
-    dueDateValue.value = "";
-    priorityValue.value = priority;
-    TaskDialog.close();
+    DOM.title.value = "";
+    DOM.description.value = "";
+    DOM.dueDate.value = "";
+    DOM.priority.value = priority;
+
+    DOM.taskDialog.close();
   });
 }
 
 export function showProjectDialog() {
-  const addProjectDialog = document.getElementById("openProjectDialog");
-  const projectDialog = document.getElementById("addProjectDialog");
-
-  addProjectDialog.addEventListener("click", () => {
-    projectDialog.showModal();
+  DOM.projectDialog.addEventListener("click", () => {
+    DOM.projectDialog.showModal();
   });
 
-  const projectName = document.getElementById("projectName");
-  const confirmProjectBtn = document.getElementById("projectConfirmBtn");
-  confirmProjectBtn.addEventListener("click", (e) => {
+  DOM.confirmProjectBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const projectNameValue = projectName.value.trim();
+    const projectNameValue = DOM.projectNameInput.value.trim();
 
     if (!projectNameValue) {
       alert("Project name cannot be empty");
@@ -78,12 +86,12 @@ export function showProjectDialog() {
     createProject(projectNameValue);
 
     addProjectToDropdown();
-    projectDialog.close();
+    DOM.projectDialog.close();
   });
 }
 
 export function addProjectToDropdown() {
-  const projectDropdown = document.getElementById("projects-dropdown");
+  const projectDropdown = DOM.projectName;
   projectDropdown.innerHTML = "";
 
   const defaultOption = document.createElement("option");
@@ -93,16 +101,30 @@ export function addProjectToDropdown() {
   defaultOption.textContent = "Select a Project";
   projectDropdown.appendChild(defaultOption);
 
-  PROJECTS.forEach((element) => {
+  getAllProject().forEach((element) => {
     const name = element.getName();
     if (!name) return;
 
     const option = document.createElement("option");
-
     option.textContent = name;
     option.value = name;
     option.className = "project-label";
-
     projectDropdown.appendChild(option);
+  });
+}
+
+function renderTodosForProject(project) {
+  const container = document.querySelector("#app");
+  container.innerHTML = "";
+
+  project.getTodos().forEach((todo) => {
+    const div = document.createElement("div");
+    div.className = "task-container";
+
+    const task = document.createElement("p");
+    task.className = "task";
+    task.textContent = `${todo.title} ${todo.description} ${todo.dueDate} ${todo.priority} ${todo.completed}`;
+    div.appendChild(task);
+    container.appendChild(div);
   });
 }

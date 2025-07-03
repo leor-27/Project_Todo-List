@@ -1,9 +1,11 @@
-import "./styles.css";
-import { createProject } from "./project";
-import { createWindow } from "./ui";
-import { showProjectDialog } from "./ui";
+import "./logic/styles.css";
+import { createProject } from "./logic/project";
+import { createWindow, showProjectDialog } from "./ui";
 
-const myProject = createProject();
+function init() {
+  const myProject = createProject();
+  createWindow();
+  showProjectDialog();
+}
 
-createWindow();
-showProjectDialog();
+init();
