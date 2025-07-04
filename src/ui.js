@@ -1,10 +1,12 @@
 import { createTodo } from "./logic/todo";
 import { compareAsc, constructFrom, format } from "date-fns";
-import { createProject, getAllProject } from "./logic/project";
-import { handleNewTodo } from "./controller";
 import { ProjectManager } from "./logic/project";
-
-const PROJECT_MANAGER = new ProjectManager();
+import { Project } from "./logic/project";
+import {
+  findProjectByName,
+  createProject,
+  getAllProject,
+} from "./logic/project";
 
 const DOM = {
   taskDialog: document.querySelector("#AddTaskDialog"),
@@ -12,7 +14,7 @@ const DOM = {
   description: document.querySelector("#description"),
   dueDate: document.querySelector("#dueDate"),
   priority: document.querySelector("#priority-dropdown"),
-  projectName: document.querySelector("#projects-dropdown"),
+  projectDropdown: document.querySelector("#projects-dropdown"),
   confirmTodoBtn: document.querySelector("#confirm"),
   projectDialog: document.querySelector("#addProjectDialog"),
   openProjectDialogBtn: document.querySelector("#openProjectDialog"),
@@ -24,60 +26,77 @@ const DOM = {
 };
 
 export function createWindow() {
+  const container = DOM.container;
+
   // Show modal
+  const openTaskDialog = DOM.openTaskDialog;
+  const TaskDialog = DOM.taskDialog;
 
-  DOM.openTaskDialog.addEventListener("click", () => {
-    DOM.taskDialog.showModal();
+  openTaskDialog.addEventListener("click", () => {
+    TaskDialog.showModal();
   });
 
-  DOM.cancelTaskBtn.addEventListener("click", () => {
-    DOM.taskDialog.close();
+  const cancelBtn = DOM.cancelTaskBtn;
+  cancelBtn.addEventListener("click", () => {
+    TaskDialog.close();
   });
 
-  DOM.confirmTodoBtn.addEventListener("click", (e) => {
+  const titleValue = DOM.title;
+  const descriptionValue = DOM.description;
+  const dueDateValue = DOM.dueDate;
+  const priorityValue = DOM.priority;
+  const projectName = DOM.projectDropdown;
+
+  const confirmBtn = DOM.confirmTodoBtn;
+  confirmBtn.addEventListener("click", (e) => {
     e.preventDefault();
-    const title = DOM.title.value;
-    const description = DOM.description.value;
-    const dueDate = DOM.dueDate.value;
-    const priority = DOM.priority.value;
-    const projectName = DOM.projectName.value; // <-- add this line
+    const title = titleValue.value;
+    const description = descriptionValue.value;
+    const dueDate = dueDateValue.value;
+    const priority = priorityValue.value;
+    const projectLabel = projectName.value;
 
     const formattedDate = format(new Date(dueDate), "PPp");
 
-    const div = document.createElement("div");
-    div.className = "task-container";
-    const task = document.createElement("p");
-    task.className = "task";
+    // const div = document.createElement("div");
+    // div.className = "task-container";
+    // const task = document.createElement("p");
+    // task.className = "task";
 
-    const todo = handleNewTodo({
-      title,
-      description,
-      dueDate,
-      priority,
-      projectName,
-    });
+    // // task.textContent = JSON.stringify(todo, null, 2);
+    // task.textContent = `${todo.title} ${todo.description} ${todo.dueDate} ${todo.priority} ${todo.completed}`;
 
-    div.appendChild(task);
-    DOM.container.appendChild(div);
+    // div.appendChild(task);
+    // container.appendChild(div);
+    const todo = createTodo(title, description, formattedDate, priority, false);
 
-    DOM.title.value = "";
-    DOM.description.value = "";
-    DOM.dueDate.value = "";
-    DOM.priority.value = priority;
+    const project = findProjectByName(projectLabel);
+    project.addTodo(todo);
 
-    DOM.taskDialog.close();
+    renderTodosForProject(project.getTodos());
+
+    titleValue.value = "";
+    descriptionValue.value = "";
+    dueDateValue.value = "";
+    priorityValue.value = priority;
+    TaskDialog.close();
   });
 }
 
 export function showProjectDialog() {
-  DOM.projectDialog.addEventListener("click", () => {
-    DOM.projectDialog.showModal();
+  const addProjectDialog = DOM.openProjectDialogBtn;
+  const projectDialog = DOM.projectDialog;
+
+  addProjectDialog.addEventListener("click", () => {
+    projectDialog.showModal();
   });
 
-  DOM.confirmProjectBtn.addEventListener("click", (e) => {
+  const projectName = DOM.projectNameInput;
+  const confirmProjectBtn = DOM.confirmProjectBtn;
+  confirmProjectBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
-    const projectNameValue = DOM.projectNameInput.value.trim();
+    const projectNameValue = projectName.value.trim();
 
     if (!projectNameValue) {
       alert("Project name cannot be empty");
@@ -86,12 +105,12 @@ export function showProjectDialog() {
     createProject(projectNameValue);
 
     addProjectToDropdown();
-    DOM.projectDialog.close();
+    projectDialog.close();
   });
 }
 
 export function addProjectToDropdown() {
-  const projectDropdown = DOM.projectName;
+  const projectDropdown = DOM.projectDropdown;
   projectDropdown.innerHTML = "";
 
   const defaultOption = document.createElement("option");
@@ -106,25 +125,35 @@ export function addProjectToDropdown() {
     if (!name) return;
 
     const option = document.createElement("option");
+
     option.textContent = name;
     option.value = name;
     option.className = "project-label";
+
     projectDropdown.appendChild(option);
   });
 }
 
 function renderTodosForProject(project) {
-  const container = document.querySelector("#app");
-  container.innerHTML = "";
+  const container = DOM.container;
 
-  project.getTodos().forEach((todo) => {
+  project.forEach((todo) => {
     const div = document.createElement("div");
     div.className = "task-container";
 
     const task = document.createElement("p");
     task.className = "task";
-    task.textContent = `${todo.title} ${todo.description} ${todo.dueDate} ${todo.priority} ${todo.completed}`;
+    task.textContent = `${todo.title} ${todo.description} ${todo.dueDate} ${todo.priority}`;
+    const completedBtn = document.createElement("input");
+    completedBtn.setAttribute("type", "checkbox");
+    completedBtn.className = "toggle-completed";
+    const deleteTask = document.createElement("button");
+    deleteTask.className = "deleteTask-btn";
+    deleteTask.textContent = "X";
+
     div.appendChild(task);
+    div.appendChild(completedBtn);
+    div.appendChild(deleteTask);
     container.appendChild(div);
   });
 }

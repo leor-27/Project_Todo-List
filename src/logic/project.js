@@ -63,3 +63,7 @@ export function createProject(name) {
 export function getAllProject() {
   return PROJECT_MANAGER.getAllProject();
 }
+
+export function findProjectByName(name) {
+  return PROJECT_MANAGER.findProjectByName(name);
+}
