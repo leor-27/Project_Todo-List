@@ -1,12 +1,8 @@
-import { createTodo } from "./logic/todo";
+import { createTodo } from "./todo";
 import { compareAsc, constructFrom, format } from "date-fns";
-import { ProjectManager } from "./logic/project";
-import { Project } from "./logic/project";
-import {
-  findProjectByName,
-  createProject,
-  getAllProject,
-} from "./logic/project";
+import { ProjectManager } from "./project";
+import { Project } from "./project";
+import { findProjectByName, createProject, getAllProject } from "./project";
 
 const DOM = {
   taskDialog: document.querySelector("#AddTaskDialog"),
