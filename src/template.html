@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Todo List App</title>
+  </head>
+  <body>
+    <div id="App">
+      <!-- Task Dialog -->
+      <dialog id="task-dialog">
+        <form method="dialog">
+          <p class="title">
+            <input
+              type="text"
+              id="title"
+              class="form-input"
+              name="title"
+              placeholder="Task title"
+            />
+          </p>
+          <p class="description">
+            <input
+              type="text"
+              id="description"
+              class="form-input"
+              name="description"
+              placeholder="Description"
+            />
+          </p>
+          <p class="dueDate">
+            <input
+              type="datetime-local"
+              class="form-input"
+              id="dueDate"
+              name="dueDate"
+            />
+          </p>
+          <label for="priority-dropdown">Priority</label>
+          <select
+            name="priority-dropdown"
+            id="priority-dropdown"
+            class="form-input"
+          >
+            <option value="low">Low</option>
+            <option value="medium">Medium</option>
+            <option value="high">High</option>
+          </select>
+
+          <div class="task-dialog-btn">
+            <button value="cancel" formmethod="dialog" class="cancel-btn">
+              Cancel
+            </button>
+            <button id="confirm" value="default" type="button">Confirm</button>
+          </div>
+        </form>
+      </dialog>
+      <button id="open-task-dialog">Add Task</button>
+
+      <!-- Task container -->
+      <div class="task-container"></div>
+    </div>
+  </body>
+</html>
