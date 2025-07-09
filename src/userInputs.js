@@ -35,6 +35,10 @@ export function renderTaskDialog(onConfirm) {
       onConfirm({ title, description, formattedDate, priority });
     }
 
+    titleInput.value = "";
+    descriptionInput.value = "";
+    duedateInput.value = "";
+    priorityInput.value = "low";
     taskDialog.close();
   });
 }
