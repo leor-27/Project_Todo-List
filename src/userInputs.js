@@ -28,11 +28,12 @@ export function renderTaskDialog(onConfirm) {
     const description = descriptionInput.value;
     const dueDate = duedateInput.value;
     const priority = priorityInput.value;
+    let isCompleted = true;
 
     const formattedDate = format(new Date(dueDate), "PPp");
 
     if (onConfirm) {
-      onConfirm({ title, description, formattedDate, priority });
+      onConfirm({ title, description, formattedDate, priority, isCompleted });
     }
 
     titleInput.value = "";

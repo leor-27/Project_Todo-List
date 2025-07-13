@@ -11,7 +11,7 @@ export function renderTasks() {
 
     const task = document.createElement("p");
     task.className = "task";
-    task.textContent = `${todo.title} ${todo.description} ${todo.duedate} ${todo.priority}`;
+    task.textContent = `${todo.title} ${todo.description} ${todo.duedate} ${todo.priority} ${todo.isCompleted}`;
 
     const completedBtn = document.createElement("input");
     completedBtn.setAttribute("type", "checkbox");
@@ -21,8 +21,8 @@ export function renderTasks() {
     deleteTask.className = "deleteTask-btn";
     deleteTask.textContent = "X";
 
-    div.appendChild(task);
     div.appendChild(completedBtn);
+    div.appendChild(task);
     div.appendChild(deleteTask);
     taskContainer.appendChild(div);
   });

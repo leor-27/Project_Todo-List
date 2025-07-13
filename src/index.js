@@ -4,10 +4,18 @@ import { renderTaskDialog, getUserInputValue } from "./userInputs";
 import { renderTasks } from "./DOM";
 
 function init() {
-  renderTaskDialog(({ title, description, formattedDate, priority }) => {
-    const todo = createTodo(title, description, formattedDate, priority);
-    renderTasks();
-  });
+  renderTaskDialog(
+    ({ title, description, formattedDate, priority, isCompleted }) => {
+      const todo = createTodo(
+        title,
+        description,
+        formattedDate,
+        priority,
+        isCompleted
+      );
+      renderTasks();
+    }
+  );
 }
 
 init();
