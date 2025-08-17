@@ -17,13 +17,27 @@ export function renderTasks() {
     completedBtn.setAttribute("type", "checkbox");
     completedBtn.className = "toggle-completed";
 
-    const deleteTask = document.createElement("button");
-    deleteTask.className = "deleteTask-btn";
-    deleteTask.textContent = "X";
+    const deleteTaskBtn = document.createElement("button");
+    deleteTaskBtn.className = "deleteTask-btn";
+    deleteTaskBtn.textContent = "X";
+    deleteTaskBtn.addEventListener('click', () => {
+      deleteTask(todo.taskId);
+    })
+
 
     div.appendChild(completedBtn);
     div.appendChild(task);
-    div.appendChild(deleteTask);
+    div.appendChild(deleteTaskBtn);
     taskContainer.appendChild(div);
   });
+
+
+}
+
+function deleteTask(taskId) {
+  const index = myTodos.findIndex(todo => todo.taskId === taskId);
+  if (index !== -1) {
+    myTodos.splice(index, 1);
+    renderTasks();
+  }
 }
