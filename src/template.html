@@ -1,64 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo List App</title>
-  </head>
-  <body>
-    <div id="App">
-      <!-- Task Dialog -->
-      <dialog id="task-dialog">
-        <form method="dialog">
-          <p class="title">
-            <input
-              type="text"
-              id="title"
-              class="form-input"
-              name="title"
-              placeholder="Task title"
-            />
-          </p>
-          <p class="description">
-            <input
-              type="text"
-              id="description"
-              class="form-input"
-              name="description"
-              placeholder="Description"
-            />
-          </p>
-          <p class="dueDate">
-            <input
-              type="datetime-local"
-              class="form-input"
-              id="dueDate"
-              name="dueDate"
-            />
-          </p>
-          <label for="priority-dropdown">Priority</label>
-          <select
-            name="priority-dropdown"
-            id="priority-dropdown"
-            class="form-input"
-          >
-            <option value="low" selected>Low</option>
-            <option value="medium">Medium</option>
-            <option value="high">High</option>
-          </select>
 
-          <div class="task-dialog-btn">
-            <button value="cancel" formmethod="dialog" class="cancel-btn">
-              Cancel
-            </button>
-            <button id="confirm" value="default" type="button">Confirm</button>
-          </div>
-        </form>
-      </dialog>
-      <button id="open-task-dialog">Add Task</button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Todo List App</title>
+</head>
 
-      <!-- Task container -->
+<body>
+  <div class="main-container">
+    <!-- SideBar -->
+    <div class="sidebar-container">
+
+      <div class="logo">
+        <h1>TodoList</h1>
+      </div>
+      <div id="App">
+        <!-- Task Dialog -->
+        <dialog id="task-dialog">
+          <form method="dialog">
+            <p class="title">
+              <input type="text" id="title" class="form-input" name="title" placeholder="Task title" />
+            </p>
+            <p class="description">
+              <input type="text" id="description" class="form-input" name="description" placeholder="Description" />
+            </p>
+            <p class="dueDate">
+              <input type="datetime-local" class="form-input" id="dueDate" name="dueDate" />
+            </p>
+            <label for="priority-dropdown">Priority</label>
+            <select name="priority-dropdown" id="priority-dropdown" class="form-input">
+              <option value="low" selected>Low</option>
+              <option value="medium">Medium</option>
+              <option value="high">High</option>
+            </select>
+
+            <div class="task-dialog-btn">
+              <button value="cancel" formmethod="dialog" class="cancel-btn">
+                Cancel
+              </button>
+              <button id="confirm" value="default" type="button">Confirm</button>
+            </div>
+          </form>
+        </dialog>
+        <button id="open-task-dialog">Add Task</button>
+
+
+      </div>
+
+      <div class="side-bar">
+        <ul>
+          <li>
+            <a href="#" class="active">All Tasks</a>
+          </li>
+          <li>
+            <a href="#">Today</a>
+          </li>
+          <li>
+            <a href="#">This Week</a>
+          </li>
+          <li>
+            <a href="#">Important</a>
+          </li>
+        </ul>
+      </div>
+
+    </div>
+    <!-- Task container -->
+    <div class="all-task">
+      <h2>All Tasks</h2>
       <div class="task-content"></div>
     </div>
-  </body>
+
+</body>
+
 </html>

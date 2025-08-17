@@ -16,6 +16,13 @@ export function renderTasks() {
     const completedBtn = document.createElement("input");
     completedBtn.setAttribute("type", "checkbox");
     completedBtn.className = "toggle-completed";
+    completedBtn.checked = todo.isCompleted;
+    completedBtn.addEventListener('change', () => {
+      todo.markAsCompleted();
+      renderTasks();
+    });
+
+    changeStyle(completedBtn, todo.isCompleted, task);
 
     const deleteTaskBtn = document.createElement("button");
     deleteTaskBtn.className = "deleteTask-btn";
@@ -39,5 +46,13 @@ function deleteTask(taskId) {
   if (index !== -1) {
     myTodos.splice(index, 1);
     renderTasks();
+  }
+}
+function changeStyle(completedBtn, isCompleted, task) {
+  if (isCompleted) {
+
+    task.style.textDecoration = "line-through";
+  } else {
+    task.style.textDecoration = "none";
   }
 }
