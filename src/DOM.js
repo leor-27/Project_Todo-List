@@ -1,4 +1,6 @@
-import { myTodos } from "./todo";
+
+import { renderTaskDialog } from "./userInputs";
+import { myTodos, createTodo } from "./todo";
 
 const taskContainer = document.querySelector(".task-content");
 
@@ -37,8 +39,6 @@ export function renderTasks() {
     div.appendChild(deleteTaskBtn);
     taskContainer.appendChild(div);
   });
-
-
 }
 
 function deleteTask(taskId) {
@@ -56,3 +56,75 @@ function changeStyle(completedBtn, isCompleted, task) {
     task.style.textDecoration = "none";
   }
 }
+
+export function renderProjects() {
+  const projectList = document.querySelector(".project-list");
+  const projectDialog = document.getElementById("project-dialog");
+  const openProjectDialog = document.getElementById("open-project-dialog");
+
+  const confirmProjectBtn = document.getElementById("confirm-project");
+  confirmProjectBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    const projectNameInput = document.getElementById("project-title");
+    const projectName = projectNameInput.value;
+
+    if (projectName) {
+      const projectItem = document.createElement("li");
+      projectItem.textContent = projectName;
+
+
+
+
+      projectList.appendChild(projectItem);
+      projectNameInput.value = "";
+      addTodoToProject(projectName);
+      projectDialog.close();
+    }
+  })
+
+  openProjectDialog.addEventListener('click', () => {
+    projectDialog.showModal();
+  })
+
+  const addTodoBtn = document.querySelector(".add-todo-btn");
+  addTodoBtn.addEventListener('click', () => {
+    renderTaskDialog(({ title, description, formattedDate, priority, isCompleted }) => {
+      const todo = createTodo(
+        title,
+        description,
+        formattedDate,
+        priority,
+        isCompleted
+      );
+
+      renderTasks();
+    });
+  })
+}
+
+function addTodoToProject(projectName) {
+  const projectItem = document.querySelector(".project-list");
+  if (projectItem) {
+    const addTodo = document.createElement("button");
+    addTodo.textContent = "+";
+    addTodo.className = "add-todo-btn";
+    projectItem.appendChild(addTodo);
+
+    const addTodoBtn = document.querySelector(".add-todo-btn");
+    addTodoBtn.addEventListener('click', () => {
+      renderTaskDialog(({ title, description, formattedDate, priority, isCompleted }) => {
+        const todo = createTodo(
+          title,
+          description,
+          formattedDate,
+          priority,
+          isCompleted
+        );
+        renderTasks();
+      });
+    });
+  }
+}
+
+
+
